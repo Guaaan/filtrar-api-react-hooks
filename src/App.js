@@ -22,13 +22,14 @@ function App() {
 
   const handleChange = e => {
     setBusqueda(e.target.value);
-    filtrar("Búsqueda: " + e.target.value);
+    filtrar(e.target.value);
   }
 
-  const filtrar = (terminados) => {
-    var resultadosBusqueda = tablaUsuarios.filter((elemento) => {
-      if (elemento.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase()) || elemento.company.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
-      ) {
+  const filtrar=(terminoBusqueda)=>{
+    var resultadosBusqueda=tablaUsuarios.filter((elemento)=>{
+      if(elemento.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
+      || elemento.company.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
+      ){
         return elemento;
       }
     });
