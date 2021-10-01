@@ -6,39 +6,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
-  const [usuarios, setUsuarios] = useState([]);
-  const [tablaUsuarios, setTablaUsuarios] = useState([]);
+  const [medicamento, setMedicamento] = useState("");
+  const [codigo, setCodigo] = useState("");
+  const [tablaMedicamentos, setTablaMedicamentos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
+  const [resultado, setResultado] = useState({});
 
-  const peticionGet = async () => {
-    await axios.get("https://jsonplaceholder.typicode.com/users")
-      .then(response => {
-        setUsuarios(response.data);
-        setTablaUsuarios(response.data);
-      }).catch(error => {
-        console.log(error);
-      })
+  
+  useEffect(()=>{
+    if(medicamento === '') return;
+    consultarApi();
+  },[medicamento, codigo]);
+
+  const handleChange = e ==>{
+    
   }
 
-  const handleChange = e => {
-    setBusqueda(e.target.value);
-    filtrar(e.target.value);
+  const consultarApi = async () => {
+    
+    const url = 'https://gtw-prod.alemana.io/public/api-farmacos/v1/amp?q=${medicamento}&refset=${codigo}';
+    
+    const respuesta = await fetch(url);
+    const resultado = await respuesta.json();
+
+
   }
 
-  const filtrar=(terminoBusqueda)=>{
-    var resultadosBusqueda=tablaUsuarios.filter((elemento)=>{
-      if(elemento.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
-      || elemento.company.name.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
-      ){
-        return elemento;
-      }
-    });
-    setUsuarios(resultadosBusqueda);
-  }
-
-  useEffect(() => {
-    peticionGet();
-  }, [])
+  
   return (
     <div className="App">
       <div className="containerInput">
@@ -46,7 +40,7 @@ function App() {
           className="form-control inputBuscar"
           velue={busqueda}
           placeholder="Búsqueda por Nombre o Empresa"
-          onChange={handleChange}
+          
         />
         <button className="btn btn-success">
           <FontAwesomeIcon icon={faSearch} />
@@ -68,8 +62,8 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {usuarios &&
-              usuarios.map((usuario) => (
+            {medicamento &&
+              medicamento.map((usuario) => (
                 <tr key={usuario.id}>
                   <td>{usuario.id}</td>
                   <td>{usuario.name}</td>
